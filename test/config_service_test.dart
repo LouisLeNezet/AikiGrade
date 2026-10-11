@@ -34,7 +34,7 @@ void main() {
 
       expect(appVersion, isNotNull);
       expect(appVersion, isA<String>());
-      expect(appVersion, '0.0.1+1');
+      expect(appVersion, '0.1.0+1');
 
       final examDefaultName = ConfigService.getConfig('examDefaultName');
       expect(examDefaultName, "My Exam");

@@ -27,8 +27,8 @@ If you plan a large change, please open an issue first so we can agree on the ap
 
 ### Prerequisites
 
-- [Flutter SDK](https://docs.flutter.dev/get-started/install) 3.29 or later (check `pubspec.yaml` for the exact constraint)
-- Dart 3.7 or later (bundled with Flutter)
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) 3.32 or later (check `pubspec.yaml` for the exact constraint)
+- Dart 3.8 or later (bundled with Flutter)
 - Chrome, to run the web version
 - Android Studio or an Android device/emulator, to run the Android version
 
@@ -136,10 +136,10 @@ Contributions on any of these items are welcome. Items are grouped by theme; ope
 
 ### Tooling and releases
 
-- [ ] GitHub Actions workflow running `flutter analyze` and `flutter test` on every push and pull request, with a status badge in the README
-- [ ] GitHub Actions workflow building and deploying the web version to GitHub Pages
+- [x] GitHub Actions workflow running `flutter analyze` and `flutter test` on every push and pull request, with a status badge in the README
+- [x] GitHub Actions workflow building and deploying the web version to GitHub Pages
 - [ ] GitHub Actions workflow building an Android APK when a version tag is pushed
-- [ ] Remove unused platform folders and keep only `web` and `android`
+- [x] Remove unused platform folders and keep only `web` and `android`
 - [ ] First tagged release (`v0.1.0`)
 
 ## Questions
