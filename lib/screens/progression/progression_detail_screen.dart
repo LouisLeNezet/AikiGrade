@@ -35,7 +35,8 @@ class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
           }
 
           if (snapshot.hasError) {
-            return Center(child: Text('Error loading exam: ${snapshot.error}'));
+            debugPrint('Error loading exam: ${snapshot.error}');
+            return const Center(child: Text('Could not load this exam.'));
           }
 
           if (!snapshot.hasData) {
