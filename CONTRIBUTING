@@ -1,0 +1,149 @@
+# Contributing to AïkiGrade
+
+Thanks for your interest in AïkiGrade! This app helps Aïkido practitioners prepare for their grade exams, and every contribution, from a typo fix to a new feature, is welcome.
+
+## Table of contents
+
+- [Ways to contribute](#ways-to-contribute)
+- [Getting started](#getting-started)
+- [Project structure](#project-structure)
+- [Development workflow](#development-workflow)
+- [Coding guidelines](#coding-guidelines)
+- [Contributing technique content](#contributing-technique-content)
+- [Roadmap](#roadmap)
+- [Questions](#questions)
+
+## Ways to contribute
+
+- **Report a bug**: open an [issue](https://github.com/LouisLeNezet/AikiGrade/issues) with the steps to reproduce, what you expected, what happened, and your platform (browser or Android version).
+- **Suggest an improvement**: open an issue describing the need first, then the idea.
+- **Fix or complete technique data**: corrections to the technique list, descriptions or video links are very valuable (see [Contributing technique content](#contributing-technique-content)).
+- **Improve the documentation**: README, screenshots, translations.
+- **Write code**: pick an item from the [Roadmap](#roadmap) or an issue labelled `good first issue`.
+
+If you plan a large change, please open an issue first so we can agree on the approach before you invest time.
+
+## Getting started
+
+### Prerequisites
+
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) 3.29 or later (check `pubspec.yaml` for the exact constraint)
+- Dart 3.7 or later (bundled with Flutter)
+- Chrome, to run the web version
+- Android Studio or an Android device/emulator, to run the Android version
+
+Check your setup with:
+
+```bash
+flutter doctor
+```
+
+### Run the app locally
+
+```bash
+# 1. Fork the repository on GitHub, then clone your fork
+git clone https://github.com/<your-username>/AikiGrade.git
+cd AikiGrade
+
+# 2. Install dependencies
+flutter pub get
+
+# 3. Run in the browser
+flutter run -d chrome
+
+# Or on a connected Android device / emulator
+flutter run -d android
+```
+
+### Run the checks
+
+```bash
+flutter analyze   # static analysis (lints)
+flutter test      # unit and widget tests
+```
+
+Both must pass before you open a pull request.
+
+## Project structure
+
+| Path | Content |
+| --- | --- |
+| `lib/` | Application source code (Dart) |
+| `test/` | Unit and widget tests |
+| `assets/csv/` | Technique data and exams setup |
+| `assets/markdowns/` | Technique descriptions |
+| `assets/config.json` | Application configuration |
+| `assets/images/` | Images and logos |
+| `web/`, `android/` | Platform-specific code |
+
+## Development workflow
+
+1. **Fork** the repository and create a branch from `dev`:
+   ```bash
+   git checkout dev
+   git pull
+   git checkout -b feature/short-description
+   ```
+   Use a prefix such as `feature/`, `fix/`, `docs/` or `chore/`.
+2. **Make your changes**, in small and focused commits.
+3. **Add or update tests** when you change behaviour, especially anything touching saved data.
+4. **Run** `flutter analyze` and `flutter test`.
+5. **Push** your branch and open a **pull request against `dev`**.
+6. In the pull request, explain *what* changed and *why*, link the related issue (`Closes #12`), and add screenshots for any UI change.
+
+### Commit messages
+
+Write short, imperative messages, for example:
+
+```
+Add JSON export of user progress
+Fix crash when loading empty history
+```
+
+## Coding guidelines
+
+- Follow the [Dart style guide](https://dart.dev/effective-dart/style) and format your code with `dart format .`.
+- Fix all warnings reported by `flutter analyze`.
+- Keep UI, state and data-access logic separated so they can be tested independently.
+- **Never break users' saved progress.** Data is stored locally and there is no cloud backup. Any change to the saved JSON format must keep old data readable (see the schema versioning item in the roadmap).
+- Keep the privacy stance of the project: no account system, no tracking, no cloud.
+- Avoid adding a new dependency unless it is clearly worth it, and mention it in your pull request.
+
+## Contributing technique content
+
+The techniques follow the FFAAA handbook.
+
+- Technique lists are in `assets/csv/`, descriptions in `assets/markdowns/`.
+- Do **not** change the identifier of an existing technique: user progress is linked to it. Fix names or descriptions freely, but keep the ID.
+- For a new technique, add its row to the CSV and a matching markdown file, then check it displays correctly in the app.
+
+## Roadmap
+
+Contributions on any of these items are welcome. Items are grouped by theme; open an issue before starting so work is not duplicated.
+
+### Data safety (priority)
+
+- [ ] Stable technique IDs, so renaming or correcting a technique never breaks saved progress
+- [ ] Schema version in the saved JSON, with a small migration path so updates never wipe users' progress
+- [ ] Export (and import) of progress as JSON, so users can keep and move their data
+
+### Features
+
+- [ ] Spaced repetition: surface techniques the user rates poorly or has not reviewed recently, instead of only letting them pick
+- [ ] Offline support (PWA for the web version)
+- [ ] Multilingual support (French and English first)
+- [ ] Dark mode
+
+### Tooling and releases
+
+- [ ] GitHub Actions workflow running `flutter analyze` and `flutter test` on every push and pull request, with a status badge in the README
+- [ ] GitHub Actions workflow building and deploying the web version to GitHub Pages
+- [ ] GitHub Actions workflow building an Android APK when a version tag is pushed
+- [ ] Remove unused platform folders and keep only `web` and `android`
+- [ ] First tagged release (`v0.1.0`)
+
+## Questions
+
+If something is unclear, open an issue or start a discussion on the repository. AïkiGrade is developed by the Aïkido club of Le Rheu, France, and we are happy to help newcomers get started.
+
+By contributing, you agree that your contributions will be released under the project's license.

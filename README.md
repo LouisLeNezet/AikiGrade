@@ -28,7 +28,7 @@
   - All data is stored locally in JSON files
 - **Cross-Platform**:
   - Available for the moment on the [Github page](https://louislenezet.github.io/AikiGrade)
-  - Will in the future be available directly on mobile as a local application
+  - Will in the future be available directly on Android as a local application
 
 ## Contributing
 
