@@ -57,8 +57,11 @@ class _MarkdownViewerState extends State<MarkdownViewer> {
     try {
       return await rootBundle.loadString(path);
     } catch (e, stack) {
-      _logger.e('Could not load markdown asset $path',
-          error: e, stackTrace: stack);
+      _logger.e(
+        'Could not load markdown asset $path',
+        error: e,
+        stackTrace: stack,
+      );
       rethrow;
     }
   }
