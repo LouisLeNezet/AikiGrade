@@ -2,19 +2,26 @@ name: Prevent Non-dev PRs to Main
 
 on:
   pull_request:
-    branches:
-      - main
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
   block-branch:
     runs-on: ubuntu-latest
     steps:
       - name: Check source branch
+        # Values go through env vars (not inlined in the script) to avoid
+        # shell injection from a crafted branch name.
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          BASE_REPO: ${{ github.repository }}
         run: |
-          echo "Source: ${{ github.head_ref }}"
-          if [[ "${{ github.head_ref }}" != "dev" ]]; then
-            echo "❌ Only PRs from 'dev' are allowed to merge into 'main'."
+          echo "Source: $HEAD_REPO:$HEAD_REF"
+          if [[ "$HEAD_REF" != "dev" || "$HEAD_REPO" != "$BASE_REPO" ]]; then
+            echo "❌ Only PRs from this repository's 'dev' branch are allowed to merge into 'main'."
             exit 1
-          else
-            echo "✅ Valid PR from 'dev' branch."
           fi
+          echo "✅ Valid PR from 'dev' branch."

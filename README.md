@@ -1,3 +1,5 @@
+  [![CI](https://github.com/LouisLeNezet/AikiGrade/actions/workflows/ci.yml/badge.svg)](https://github.com/LouisLeNezet/AikiGrade/actions/workflows/ci.yml)
+  
 # AïkiGrade
 
 <table>
@@ -41,4 +43,4 @@ Feel free to:
 
 ## Developer Information
 
-This project is currently developped by the Aïkido club of Le Rheu, France.
+This project is currently developped by the Aïkido club of Le Rheu, France under [PolyForm Noncommercial License 1.0.0](/LICENCE).

@@ -2,46 +2,47 @@ name: Deploy Flutter Web to GitHub Pages
 
 on:
   push:
-    branches:
-      - dev  # Trigger the action only on pushes to the dev branch
-  pull_request:
-    branches:
-      - dev  # Trigger the workflow when a PR is made to the dev branch
+    branches: [dev]          # deploy only on pushes, never on pull requests
+  workflow_dispatch:         # allow manual runs from the Actions tab
+
+permissions:
+  contents: write            # needed to push to the gh-pages branch
+
+concurrency:
+  group: deploy-pages
+  cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest  # The job will run on the latest version of Ubuntu
-
+  deploy:
+    runs-on: ubuntu-latest
     steps:
-      # Checkout the repository
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      # Set up Flutter environment
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.29.2'  # You can specify your Flutter version here
+          channel: stable
+          flutter-version: '3.29.2'   # keep in sync with pubspec.yaml
+          cache: true
 
-      # Install dependencies
       - name: Install dependencies
         run: flutter pub get
 
-      # Run Flutter tests
-      - name: Run Flutter Tests
-        run: flutter test --test-randomize-ordering-seed=random
+      - name: Static analysis
+        run: flutter analyze
 
-      # Build the Flutter web app
-      - name: Build Flutter Web App
-        run: flutter build web --release --base-href="/AikiGrade/" # Builds the web app for release
+      - name: Run tests
+        run: flutter test
 
-      # Deploy to GitHub Pages
+      - name: Build web app
+        run: flutter build web --release --base-href="/AikiGrade/"
+
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3  # Action to deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}  # Token to access GitHub Pages
-          publish_dir: ./build/web  # The directory to be deployed (Flutter build output)
-          publish_branch: gh-pages  # The branch to deploy to (GitHub Pages)
-          user_name: 'Flutter Bot'  # The name for commit author
-          user_email: 'flutter@bot.com'  # The email for commit author
-
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
+          publish_branch: gh-pages
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
