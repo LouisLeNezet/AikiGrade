@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
-import 'package:aikido_helper/widgets/centered_constrained.dart';
+import 'package:aikigrade/widgets/centered_constrained.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});

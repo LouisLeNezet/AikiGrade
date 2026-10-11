@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../widgets/wide_bottom_panel.dart';
 import '../../widgets/custom_app_bar.dart';
-import 'package:aikido_helper/widgets/centered_constrained.dart';
+import 'package:aikigrade/widgets/centered_constrained.dart';
 
 class ScaffoldWithWideBottomPanel extends StatelessWidget {
   final PreferredSizeWidget appBar;

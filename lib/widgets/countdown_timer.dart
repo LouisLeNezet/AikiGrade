@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:aikido_helper/constants/colors.dart';
+import 'package:aikigrade/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class CountdownTimer extends StatefulWidget {

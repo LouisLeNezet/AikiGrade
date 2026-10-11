@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:aikido_helper/functions/technique_filter.dart';
-import 'package:aikido_helper/functions/config_service.dart';
-import 'package:aikido_helper/functions/technique_class.dart';
-import 'package:aikido_helper/functions/technique_load_files.dart';
-import 'package:aikido_helper/functions/learn_json.dart';
+import 'package:aikigrade/functions/technique_filter.dart';
+import 'package:aikigrade/functions/config_service.dart';
+import 'package:aikigrade/functions/technique_class.dart';
+import 'package:aikigrade/functions/technique_load_files.dart';
+import 'package:aikigrade/functions/learn_json.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:logger/logger.dart';
 

@@ -1,4 +1,4 @@
-import 'package:aikido_helper/functions/learn_json.dart';
+import 'package:aikigrade/functions/learn_json.dart';
 import 'package:flutter/material.dart';
 import '../../functions/exam_json.dart';
 import '../../routes.dart';

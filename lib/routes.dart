@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:aikido_helper/functions/technique_class.dart';
+import 'package:aikigrade/functions/technique_class.dart';
 
 // Start & Main Menu
 import 'screens/start_menu/start_menu_screen.dart';

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:aikido_helper/functions/technique_class.dart';
+import 'package:aikigrade/functions/technique_class.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:shared_preferences/shared_preferences.dart';

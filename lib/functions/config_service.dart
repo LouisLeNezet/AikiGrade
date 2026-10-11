@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:aikido_helper/functions/utils.dart';
+import 'package:aikigrade/functions/utils.dart';
 
 class ConfigService {
   static Map<String, dynamic> _config = {};

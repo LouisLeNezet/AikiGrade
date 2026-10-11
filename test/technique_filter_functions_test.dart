@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:aikido_helper/functions/technique_filter.dart';
-import 'package:aikido_helper/functions/technique_class.dart';
-import 'package:logger/logger.dart';
+import 'package:aikigrade/functions/technique_filter.dart';
+import 'package:aikigrade/functions/technique_class.dart';
 void main() {
   group('Technique.compareNullableDate', () {
     test('null dates are prioritized first', () {

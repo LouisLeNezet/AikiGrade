@@ -1,11 +1,11 @@
 import 'dart:io';
-import 'package:aikido_helper/functions/config_service.dart';
-import 'package:aikido_helper/functions/technique_filter.dart';
+import 'package:aikigrade/functions/config_service.dart';
+import 'package:aikigrade/functions/technique_filter.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'package:aikido_helper/functions/learn_json.dart';
-import 'package:aikido_helper/functions/exam_json.dart';
-import 'package:aikido_helper/functions/utils.dart';
+import 'package:aikigrade/functions/learn_json.dart';
+import 'package:aikigrade/functions/exam_json.dart';
+import 'package:aikigrade/functions/utils.dart';
 import 'package:logger/logger.dart';
 
 // --- Fake path_provider ---

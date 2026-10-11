@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
 import '../../widgets/layouts/list_screen_layout.dart';
 import '../../widgets/rating_emoticon.dart';
-import 'package:aikido_helper/functions/utils.dart';
-import 'package:aikido_helper/functions/learn_json.dart';
+import 'package:aikigrade/functions/utils.dart';
+import 'package:aikigrade/functions/learn_json.dart';
 
 class LearnMenuScreen extends StatefulWidget {
   final String fileName;

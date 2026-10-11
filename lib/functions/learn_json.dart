@@ -1,8 +1,8 @@
-import 'package:aikido_helper/functions/technique_load_files.dart';
+import 'package:aikigrade/functions/technique_load_files.dart';
 import 'package:logger/logger.dart';
-import 'package:aikido_helper/functions/exam_json.dart';
-import 'package:aikido_helper/functions/utils.dart';
-import 'package:aikido_helper/functions/technique_class.dart';
+import 'package:aikigrade/functions/exam_json.dart';
+import 'package:aikigrade/functions/utils.dart';
+import 'package:aikigrade/functions/technique_class.dart';
 
 final Logger logger = Logger();
 

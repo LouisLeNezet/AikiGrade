@@ -1,4 +1,4 @@
-import 'package:aikido_helper/functions/utils.dart';
+import 'package:aikigrade/functions/utils.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
 import '../../widgets/layouts/list_screen_layout.dart';
