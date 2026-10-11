@@ -24,6 +24,7 @@ class EvaluationScreen extends StatefulWidget {
 class _EvaluationScreenState extends State<EvaluationScreen> {
   int _currentRating = 0;
   final Logger logger = Logger();
+  bool _busy = false;
 
   Future<void> _saveRating(int rating) async {
     await saveTechniqueRating(
@@ -37,30 +38,46 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
     String route,
     Map<String, Object?> arguments,
   ) async {
-    await _saveRating(_currentRating);
-    if (!mounted) return;
+    if (_busy) return;
+    _busy = true;
+    try {
+      await _saveRating(_currentRating);
+      if (!mounted) return;
 
-    Navigator.pushReplacementNamed(context, route, arguments: arguments);
+      Navigator.pushReplacementNamed(context, route, arguments: arguments);
+    } finally {
+      _busy = false;
+    }
   }
 
   Future<void> _finishOrNext(bool isLast) async {
-    await _saveRating(_currentRating);
-    if (!mounted) return;
+    if (_busy) return;
+    _busy = true;
+    try {
+      await _saveRating(_currentRating);
+      if (!mounted) return;
 
-    if (isLast) {
-      await updateLearnJsonFile(learnFile: "learningJson", examFile: widget.fileName);
+      if (isLast) {
+        await updateLearnJsonFile(
+          learnFile: "learningJson",
+          examFile: widget.fileName,
+        );
+        if (!mounted) return;
 
-      Navigator.pushNamed(
-        context,
-        AppRoutes.progressionDetail,
-        arguments: {'fileName': widget.fileName},
-      );
-    } else {
-      Navigator.pushReplacementNamed(
-        context,
-        AppRoutes.evaluation,
-        arguments: {'fileName': widget.fileName, 'index': widget.index + 1},
-      );
+        Navigator.pushReplacementNamed(
+          context,
+          AppRoutes.progressionDetail,
+          arguments: {'fileName': widget.fileName},
+        );
+      } else {
+        Navigator.pushReplacementNamed(
+          context,
+          AppRoutes.evaluation,
+          arguments: {'fileName': widget.fileName, 'index': widget.index + 1},
+        );
+      }
+    } finally {
+      _busy = false;
     }
   }
 
