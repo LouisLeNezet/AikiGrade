@@ -40,7 +40,7 @@ void main() {
       expect(examDefaultName, "My Exam");
 
       ConfigService.setConfig('examDefaultName', 'NewDefaultName');
-      ConfigService.saveConfig();
+      await ConfigService.saveConfig();
 
       await ConfigService.loadConfig();
       final newDefaultName = ConfigService.getConfig('examDefaultName');

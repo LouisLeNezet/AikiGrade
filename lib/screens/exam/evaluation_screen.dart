@@ -48,7 +48,7 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
     if (!mounted) return;
 
     if (isLast) {
-      updateLearnJsonFile(learnFile: "learningJson", examFile: widget.fileName);
+      await updateLearnJsonFile(learnFile: "learningJson", examFile: widget.fileName);
 
       Navigator.pushNamed(
         context,

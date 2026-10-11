@@ -159,7 +159,7 @@ void main() {
         await ConfigService.loadConfig();
         ConfigService.setConfig('prioritizeBy', 'attack');
         ConfigService.setConfig('timePerTechnique', 70);
-        ConfigService.saveConfig();
+        await ConfigService.saveConfig();
 
         await createLearnJsonFile(path: 'assets/csv/techniques.csv');
 

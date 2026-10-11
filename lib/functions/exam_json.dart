@@ -222,7 +222,7 @@ Future<void> saveTechniqueRating({
   final examData = await getJsonData(fileName: fileName);
   final evaluation = examData['evaluation'] as List<dynamic>;
   evaluation[index]['rating'] = rating;
-  saveJsonData(fileName: fileName, jsonData: examData);
+  await saveJsonData(fileName: fileName, jsonData: examData);
 }
 
 Future<List<String>> loadExamFiles() async {
