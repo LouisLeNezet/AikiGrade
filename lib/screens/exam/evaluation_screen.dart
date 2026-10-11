@@ -26,6 +26,25 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
   final Logger logger = Logger();
   bool _busy = false;
 
+  late Future<Map<String, dynamic>?> _techniqueFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _techniqueFuture = _getTechniqueSafe(widget.fileName, widget.index);
+  }
+
+  @override
+  void didUpdateWidget(covariant EvaluationScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Reload only if the screen is reused for another technique or file
+    if (oldWidget.fileName != widget.fileName ||
+        oldWidget.index != widget.index) {
+      _currentRating = 0;
+      _techniqueFuture = _getTechniqueSafe(widget.fileName, widget.index);
+    }
+  }
+
   Future<void> _saveRating(int rating) async {
     await saveTechniqueRating(
       fileName: widget.fileName,
@@ -81,7 +100,7 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
     }
   }
 
-  Future<Map<String, dynamic>?> getTechniqueSafe(
+  Future<Map<String, dynamic>?> _getTechniqueSafe(
     String fileName,
     int index,
   ) async {
@@ -98,10 +117,20 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: FutureBuilder<Map<String, dynamic>?>(
-          future: getTechniqueSafe(widget.fileName, widget.index),
+          future: _techniqueFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
+            }
+
+            if (snapshot.hasError) {
+              logger.e('Failed to load technique', error: snapshot.error);
+              return const Center(
+                child: Text(
+                  "Could not load this technique",
+                  style: TextStyle(color: Colors.red),
+                ),
+              );
             }
 
             if (!snapshot.hasData || snapshot.data == null) {
@@ -127,8 +156,6 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
 
             final nextWazaIndex = techniqueData['nextWazaIndex'] as int?;
             final nextAttackIndex = techniqueData['nextAttackIndex'] as int?;
-
-            logger.d(techniqueData);
 
             return CenteredActionScreenLayout(
               center: Column(

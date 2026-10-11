@@ -2,8 +2,22 @@ import 'package:flutter/material.dart';
 import '../../widgets/scaffold_with_wide_bottom_panel.dart';
 import '../../widgets/layouts/list_screen_layout.dart';
 import '../../widgets/rating_emoticon.dart';
+import '../../routes.dart';
 import 'package:aikigrade/functions/utils.dart';
 import 'package:aikigrade/functions/learn_json.dart';
+
+/// Latest rating of a technique, or 0 if it was never evaluated.
+/// Null-safe: a missing or malformed `progression` never crashes the build.
+int _latestRating(Map<String, dynamic> technique) {
+  final progression = technique['progression'];
+  if (progression is List && progression.isNotEmpty) {
+    final last = progression.last;
+    if (last is Map) {
+      return (last['rating'] as num?)?.toInt() ?? 0;
+    }
+  }
+  return 0;
+}
 
 class LearnMenuScreen extends StatefulWidget {
   final String fileName;
@@ -37,6 +51,34 @@ class _LearnMenuScreenState extends State<LearnMenuScreen> {
     });
   }
 
+  /// Applies the search filter and the sort order to the loaded techniques.
+  List<Map<String, dynamic>> _visibleTechniques(Map<String, dynamic> data) {
+    var list = List<Map<String, dynamic>>.from(data.values);
+
+    final queryWords = _searchQuery
+        .toLowerCase()
+        .trim()
+        .split(RegExp(r'\s+'))
+        .where((w) => w.isNotEmpty)
+        .toList();
+
+    if (queryWords.isNotEmpty) {
+      list = list.where((technique) {
+        final text = [
+          technique['waza'],
+          technique['attack'],
+          technique['technique'],
+          technique['form'],
+        ].where((e) => e != null).join(' ').toLowerCase();
+
+        return queryWords.every((word) => text.contains(word));
+      }).toList();
+    }
+
+    list.sort((a, b) => compareTechniques(a, b, _sortField, _ascending));
+    return list;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScaffoldWithWideBottomPanel(
@@ -45,39 +87,20 @@ class _LearnMenuScreenState extends State<LearnMenuScreen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error loading exam: ${snapshot.error}'));
-          } else if (!snapshot.hasData) {
+          }
+
+          if (snapshot.hasError) {
+            debugPrint('Error loading learning data: ${snapshot.error}');
+            return const Center(
+              child: Text('Could not load your learning data.'),
+            );
+          }
+
+          if (!snapshot.hasData) {
             return const Center(child: Text('No data found.'));
           }
 
-          var learnList = List<Map<String, dynamic>>.from(
-            snapshot.data!.values,
-          );
-
-          if (_searchQuery.isNotEmpty) {
-            final queryWords = _searchQuery
-                .toLowerCase()
-                .trim()
-                .split(RegExp(r'\s+'))
-                .where((w) => w.isNotEmpty)
-                .toList();
-
-            learnList = learnList.where((technique) {
-              final text = [
-                technique['waza'],
-                technique['attack'],
-                technique['technique'],
-                technique['form'],
-              ].where((e) => e != null).join(' ').toLowerCase();
-
-              return queryWords.every((word) => text.contains(word));
-            }).toList();
-          }
-
-          learnList.sort(
-            (a, b) => compareTechniques(a, b, _sortField, _ascending),
-          );
+          final learnList = _visibleTechniques(snapshot.data!);
 
           return ListScreenLayout(
             header: Column(
@@ -93,9 +116,7 @@ class _LearnMenuScreenState extends State<LearnMenuScreen> {
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value) {
-                          setState(() {
-                            _searchQuery = value.toLowerCase();
-                          });
+                          setState(() => _searchQuery = value);
                         },
                       ),
                     ),
@@ -145,38 +166,39 @@ class _LearnMenuScreenState extends State<LearnMenuScreen> {
               ],
             ),
 
-            child: ListView(
-              children: [
-                ...learnList.map(
-                  (technique) => Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    child: ListTile(
-                      title: Text(
-                        '${technique['waza']} - ${technique['attack']} - ${technique['technique']}',
-                      ),
-                      subtitle: Text(
-                        '${(technique['form'] ?? '').toString().isNotEmpty ? 'Form: ${technique['form']} | ' : ''}'
-                        'Grade: ${technique['techniqueGrade']}',
-                      ),
-                      trailing: RatingEmoticon(
-                        rating: (technique['progression'].isNotEmpty
-                            ? (technique['progression'].last['rating'] as num?)
-                                      ?.toInt() ??
-                                  0
-                            : 0),
-                        showValue: false,
-                      ),
-                      onTap: () {
-                        Navigator.of(context).pushNamed(
-                          '/learn/technique-detail',
-                          arguments: technique,
-                        );
-                      },
-                    ),
+            child: learnList.isEmpty
+                ? const Center(child: Text('No technique matches your search.'))
+                : ListView.builder(
+                    itemCount: learnList.length,
+                    itemBuilder: (context, index) {
+                      final technique = learnList[index];
+                      final form = (technique['form'] ?? '').toString();
+
+                      return Card(
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        child: ListTile(
+                          title: Text(
+                            '${technique['waza']} - ${technique['attack']} - '
+                            '${technique['technique']}',
+                          ),
+                          subtitle: Text(
+                            '${form.isNotEmpty ? 'Form: $form | ' : ''}'
+                            'Grade: ${technique['techniqueGrade']}',
+                          ),
+                          trailing: RatingEmoticon(
+                            rating: _latestRating(technique),
+                            showValue: false,
+                          ),
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                              AppRoutes.techniqueDetail,
+                              arguments: technique,
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
-                ),
-              ],
-            ),
           );
         },
       ),
