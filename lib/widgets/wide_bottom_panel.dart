@@ -18,7 +18,7 @@ class WideBottomPanel extends StatelessWidget {
         children: [
           IconButton(
             iconSize: 32,
-            icon: const Icon(Icons.settings,),
+            icon: const Icon(Icons.settings),
             onPressed: () => Navigator.pushNamed(context, AppRoutes.config),
             tooltip: 'Configure',
           ),
@@ -31,7 +31,8 @@ class WideBottomPanel extends StatelessWidget {
           IconButton(
             iconSize: 32,
             icon: const Icon(Icons.trending_up),
-            onPressed: () => Navigator.pushNamed(context, AppRoutes.progressionList),
+            onPressed: () =>
+                Navigator.pushNamed(context, AppRoutes.progressionList),
             tooltip: 'Progression',
           ),
         ],

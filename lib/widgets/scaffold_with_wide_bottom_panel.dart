@@ -21,11 +21,7 @@ class ScaffoldWithWideBottomPanel extends StatelessWidget {
       appBar: appBar,
       body: Column(
         children: [
-          Expanded(
-            child: CenteredConstrained(
-              child: body,
-            ),
-          ),
+          Expanded(child: CenteredConstrained(child: body)),
 
           const SizedBox(height: 16),
           if (showWidePanel)

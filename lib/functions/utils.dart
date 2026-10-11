@@ -13,14 +13,15 @@ Future<String> getAppVersion() async {
 
 String toTitleCase(String input) {
   if (input.isEmpty) return input;
-  return input.split(' ').map((word) {
-    return word[0].toUpperCase() + word.substring(1).toLowerCase();
-  }).join(' ');
+  return input
+      .split(' ')
+      .map((word) {
+        return word[0].toUpperCase() + word.substring(1).toLowerCase();
+      })
+      .join(' ');
 }
 
-Future <Map<String, dynamic>> getJsonData({
-  required String fileName,
-}) async {
+Future<Map<String, dynamic>> getJsonData({required String fileName}) async {
   try {
     late String content;
     if (kIsWeb) {
@@ -47,7 +48,6 @@ Future <Map<String, dynamic>> getJsonData({
     throw Exception('Failed to get exam JSON data: $e\n$stack');
   }
 }
-
 
 Future saveJsonData({
   required Map<String, dynamic> jsonData,

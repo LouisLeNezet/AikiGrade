@@ -4,11 +4,7 @@ class HeaderChip extends StatelessWidget {
   final String label;
   final String value;
 
-  const HeaderChip({
-    super.key,
-    required this.label,
-    required this.value,
-  });
+  const HeaderChip({super.key, required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +14,7 @@ class HeaderChip extends StatelessWidget {
         color: Colors.black12,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Text(
-        '$label: $value',
-        style: const TextStyle(fontSize: 12),
-      ),
+      child: Text('$label: $value', style: const TextStyle(fontSize: 12)),
     );
   }
 }

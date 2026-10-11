@@ -23,10 +23,7 @@ class RatingEmoticon extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(icon, color: color, size: iconSize),
-        if (showValue) ...[
-          const SizedBox(width: 6),
-          Text('$rating'),
-        ],
+        if (showValue) ...[const SizedBox(width: 6), Text('$rating')],
       ],
     );
   }
@@ -47,7 +44,10 @@ class RatingSelector extends StatelessWidget {
       case 0:
         return const Icon(Icons.sentiment_very_dissatisfied, color: Colors.red);
       case 1:
-        return const Icon(Icons.sentiment_dissatisfied, color: Colors.redAccent);
+        return const Icon(
+          Icons.sentiment_dissatisfied,
+          color: Colors.redAccent,
+        );
       case 2:
         return const Icon(Icons.sentiment_neutral, color: Colors.amber);
       case 3:

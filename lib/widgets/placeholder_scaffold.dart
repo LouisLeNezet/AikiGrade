@@ -8,12 +8,7 @@ class PlaceholderScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldWithWideBottomPanel(
-      body: Center(
-        child: Text(
-          title,
-          style: const TextStyle(fontSize: 20),
-        ),
-      ),
+      body: Center(child: Text(title, style: const TextStyle(fontSize: 20))),
     );
   }
 }

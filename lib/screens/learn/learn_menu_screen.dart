@@ -8,15 +8,11 @@ import 'package:aikigrade/functions/learn_json.dart';
 class LearnMenuScreen extends StatefulWidget {
   final String fileName;
 
-  const LearnMenuScreen({
-    required this.fileName,
-    super.key
-  });
+  const LearnMenuScreen({required this.fileName, super.key});
 
   @override
   State<LearnMenuScreen> createState() => _LearnMenuScreenState();
 }
-
 
 class _LearnMenuScreenState extends State<LearnMenuScreen> {
   late Future<Map<String, dynamic>> _learnData;
@@ -55,7 +51,9 @@ class _LearnMenuScreenState extends State<LearnMenuScreen> {
             return const Center(child: Text('No data found.'));
           }
 
-          var learnList = List<Map<String, dynamic>>.from(snapshot.data!.values);
+          var learnList = List<Map<String, dynamic>>.from(
+            snapshot.data!.values,
+          );
 
           if (_searchQuery.isNotEmpty) {
             final queryWords = _searchQuery
@@ -77,7 +75,9 @@ class _LearnMenuScreenState extends State<LearnMenuScreen> {
             }).toList();
           }
 
-          learnList.sort((a, b) => compareTechniques(a, b, _sortField, _ascending));
+          learnList.sort(
+            (a, b) => compareTechniques(a, b, _sortField, _ascending),
+          );
 
           return ListScreenLayout(
             header: Column(
@@ -109,19 +109,27 @@ class _LearnMenuScreenState extends State<LearnMenuScreen> {
                           PopupMenuItem(value: 'grade', child: Text('Grade')),
                           PopupMenuItem(value: 'waza', child: Text('Waza')),
                           PopupMenuItem(value: 'attack', child: Text('Attack')),
-                          PopupMenuItem(value: 'technique', child: Text('Technique')),
+                          PopupMenuItem(
+                            value: 'technique',
+                            child: Text('Technique'),
+                          ),
                         ],
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(_sortField[0].toUpperCase() + _sortField.substring(1)),
+                            Text(
+                              _sortField[0].toUpperCase() +
+                                  _sortField.substring(1),
+                            ),
                             const SizedBox(width: 4),
                             GestureDetector(
                               onTap: () {
                                 setState(() => _ascending = !_ascending);
                               },
                               child: Icon(
-                                _ascending ? Icons.arrow_upward : Icons.arrow_downward,
+                                _ascending
+                                    ? Icons.arrow_upward
+                                    : Icons.arrow_downward,
                               ),
                             ),
                           ],
@@ -153,8 +161,8 @@ class _LearnMenuScreenState extends State<LearnMenuScreen> {
                       trailing: RatingEmoticon(
                         rating: (technique['progression'].isNotEmpty
                             ? (technique['progression'].last['rating'] as num?)
-                                    ?.toInt() ??
-                                0
+                                      ?.toInt() ??
+                                  0
                             : 0),
                         showValue: false,
                       ),

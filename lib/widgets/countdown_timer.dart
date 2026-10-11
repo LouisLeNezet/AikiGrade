@@ -16,7 +16,8 @@ class CountdownTimer extends StatefulWidget {
   State<CountdownTimer> createState() => _CountdownTimerState();
 }
 
-class _CountdownTimerState extends State<CountdownTimer> with SingleTickerProviderStateMixin {
+class _CountdownTimerState extends State<CountdownTimer>
+    with SingleTickerProviderStateMixin {
   late int countdown; // The countdown value (in seconds)
   late double progress; // Circle progress (fraction of time elapsed)
   late AnimationController _animationController;
@@ -27,7 +28,7 @@ class _CountdownTimerState extends State<CountdownTimer> with SingleTickerProvid
     super.initState();
     countdown = widget.duration;
     progress = 1.0; // Start with the full circle (100%)
-    
+
     // Initialize the AnimationController
     _animationController = AnimationController(
       vsync: this,
@@ -82,15 +83,19 @@ class _CountdownTimerState extends State<CountdownTimer> with SingleTickerProvid
           // Larger circle using SizedBox
           SizedBox(
             height: 200, // Circle size
-            width: 200,  // Circle size
+            width: 200, // Circle size
             child: AnimatedBuilder(
               animation: _animationController,
               builder: (context, child) {
                 return CircularProgressIndicator(
-                  value: _animationController.value, // Circle decreases as the timer goes down
+                  value: _animationController
+                      .value, // Circle decreases as the timer goes down
                   strokeWidth: 12, // Stroke width of the circle
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.accentColor), // Circle color
-                  backgroundColor: AppColors.backgroundColor, // Background color
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    AppColors.accentColor,
+                  ), // Circle color
+                  backgroundColor:
+                      AppColors.backgroundColor, // Background color
                 );
               },
             ),
@@ -99,10 +104,10 @@ class _CountdownTimerState extends State<CountdownTimer> with SingleTickerProvid
           Text(
             "$countdown",
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontSize: 80,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
+              fontSize: 80,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
         ],
       ),

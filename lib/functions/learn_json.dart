@@ -6,9 +6,7 @@ import 'package:aikigrade/functions/technique_class.dart';
 
 final Logger logger = Logger();
 
-Future<String> createLearnJsonFile({
-  required String path,
-}) async {
+Future<String> createLearnJsonFile({required String path}) async {
   try {
     final allTech = await loadAllTechniques(path);
     final allExams = await loadExamFiles();
@@ -18,7 +16,8 @@ Future<String> createLearnJsonFile({
     int index = 0;
     for (int i = 0; i < allTech.length; i++) {
       final technique = allTech[i];
-      final key = '${technique['waza']}|${technique['attack']}|${technique['technique']}|${technique['form']}';
+      final key =
+          '${technique['waza']}|${technique['attack']}|${technique['technique']}|${technique['form']}';
       learnList[key] = {
         "waza": technique.waza,
         "attack": technique.attack,
@@ -41,7 +40,8 @@ Future<String> createLearnJsonFile({
       final dateHour = '$examDate $examHour';
 
       for (final technique in currentEvaluation) {
-        final key = '${technique["waza"]}|${technique["attack"]}|${technique["technique"]}|${technique["form"]}';
+        final key =
+            '${technique["waza"]}|${technique["attack"]}|${technique["technique"]}|${technique["form"]}';
         final rating = technique["rating"];
         if (learnList.containsKey(key) && learnList[key] != null) {
           // Append progression entry
@@ -61,21 +61,25 @@ Future<String> createLearnJsonFile({
   }
 }
 
-Future<List<Technique>> getLearnTechniques({
-  required String learnFile,
-}) async {
+Future<List<Technique>> getLearnTechniques({required String learnFile}) async {
   try {
     final learnList = await getJsonData(fileName: learnFile);
-    return learnList.values.map((data) => Technique(
-      waza: data['waza'],
-      attack: data['attack'],
-      technique: data['technique'],
-      form: data['form'],
-      grade: data['techniqueGrade'],
-      links: List<String>.from(data['links'] ?? []),
-      markdown: data['markdown'] ?? '',
-      progression: List<Map<String, dynamic>>.from(data['progression'] ?? []),
-    )).toList();
+    return learnList.values
+        .map(
+          (data) => Technique(
+            waza: data['waza'],
+            attack: data['attack'],
+            technique: data['technique'],
+            form: data['form'],
+            grade: data['techniqueGrade'],
+            links: List<String>.from(data['links'] ?? []),
+            markdown: data['markdown'] ?? '',
+            progression: List<Map<String, dynamic>>.from(
+              data['progression'] ?? [],
+            ),
+          ),
+        )
+        .toList();
   } catch (e, stack) {
     throw Exception("Failed to get learn techniques: $e\n$stack");
   }
@@ -95,7 +99,8 @@ Future<String> updateLearnJsonFile({
     final dateHour = '$examDate $examHour';
 
     for (final technique in currentEvaluation) {
-      final key = '${technique["waza"]}|${technique["attack"]}|${technique["technique"]}|${technique["form"]}';
+      final key =
+          '${technique["waza"]}|${technique["attack"]}|${technique["technique"]}|${technique["form"]}';
       final rating = technique["rating"];
       if (learnList.containsKey(key) && learnList[key] != null && rating != 0) {
         // Append progression entry
@@ -146,32 +151,18 @@ int compareTechniques(
       return va.compareTo(vb);
     }
 
-    return va
-        .toString()
-        .toLowerCase()
-        .compareTo(vb.toString().toLowerCase());
+    return va.toString().toLowerCase().compareTo(vb.toString().toLowerCase());
   }
 
   // Primary sort
-  int result = compareValues(
-    getField(a, sortField),
-    getField(b, sortField),
-  );
+  int result = compareValues(getField(a, sortField), getField(b, sortField));
 
   // Secondary sorts
   if (result == 0) {
-    const fallbackFields = [
-      'waza',
-      'attack',
-      'technique',
-      'form',
-    ];
+    const fallbackFields = ['waza', 'attack', 'technique', 'form'];
 
     for (final field in fallbackFields) {
-      result = compareValues(
-        getField(a, field),
-        getField(b, field),
-      );
+      result = compareValues(getField(a, field), getField(b, field));
 
       if (result != 0) {
         break;

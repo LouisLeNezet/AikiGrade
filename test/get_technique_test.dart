@@ -34,9 +34,7 @@ void main() {
       // Create a fake exam file before each test
       final examJson = {
         'metadata': {
-          'size': {
-            'total': 2
-          },
+          'size': {'total': 2},
         },
         'evaluation': [
           {
@@ -64,7 +62,7 @@ void main() {
         expect(result, isA<Map<String, dynamic>>());
         expect(result.containsKey('metadata'), isTrue);
         expect(result.containsKey('evaluation'), isTrue);
-        
+
         // Check inside evaluation
         final evaluation = result['evaluation'] as List;
         final firstTechnique = evaluation.first as Map<String, dynamic>;
@@ -83,7 +81,11 @@ void main() {
 
       test('throws exception if file missing evaluation section', () async {
         final badFile = File('${tempDir.path}/bad_exam.json');
-        await badFile.writeAsString(jsonEncode({'metadata': {'size': 1}}));
+        await badFile.writeAsString(
+          jsonEncode({
+            'metadata': {'size': 1},
+          }),
+        );
 
         // File name is 'bad_exam' (without .json)
         await expectLater(
@@ -111,7 +113,11 @@ void main() {
 
       test('throws if "evaluation" section is missing', () async {
         final badFile = File('${tempDir.path}/bad_exam.json');
-        await badFile.writeAsString(jsonEncode({'metadata': {'size': 1}}));
+        await badFile.writeAsString(
+          jsonEncode({
+            'metadata': {'size': 1},
+          }),
+        );
 
         expect(
           () => getTechniqueByIndex(fileName: "bad_exam", index: 1),
@@ -122,7 +128,10 @@ void main() {
 
     group('getExamMetadataKey', () {
       test('returns the correct exam size', () async {
-        final size = await getExamMetadataKey<Map<String, dynamic>>(fileName: "exam", key: 'size');
+        final size = await getExamMetadataKey<Map<String, dynamic>>(
+          fileName: "exam",
+          key: 'size',
+        );
         expect(size['total'], 2);
       });
 
@@ -131,7 +140,10 @@ void main() {
         await badFile.writeAsString(jsonEncode({'evaluation': []}));
 
         expect(
-          () => getExamMetadataKey<int>(fileName: "bad_metadata_exam", key: 'size'),
+          () => getExamMetadataKey<int>(
+            fileName: "bad_metadata_exam",
+            key: 'size',
+          ),
           throwsException,
         );
       });
@@ -149,7 +161,10 @@ void main() {
 
     group('getTechniqueAndExamSize', () {
       test('returns technique and size successfully', () async {
-        final result = await getTechniqueAndExamSize(fileName: "exam", index: 1);
+        final result = await getTechniqueAndExamSize(
+          fileName: "exam",
+          index: 1,
+        );
 
         expect(result, isA<Map<String, dynamic>>());
         expect(result['technique'], isA<Map<String, dynamic>>());
@@ -170,7 +185,8 @@ void main() {
         await badFile.writeAsString(jsonEncode({'evaluation': []}));
 
         expect(
-          () => getTechniqueAndExamSize(fileName: "bad_metadata_exam", index: 1),
+          () =>
+              getTechniqueAndExamSize(fileName: "bad_metadata_exam", index: 1),
           throwsException,
         );
       });

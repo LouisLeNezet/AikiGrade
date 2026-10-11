@@ -14,20 +14,31 @@ Future<String> createExamJsonFile({
   required String grade,
   required String examName,
   Future<String> Function()? getAppVersionFn,
-  Future<List<Technique>> Function({required String grade, required String gradeTimeCsvPath})? subsetTechniquesFn,
+  Future<List<Technique>> Function({
+    required String grade,
+    required String gradeTimeCsvPath,
+  })?
+  subsetTechniquesFn,
 }) async {
   try {
     final appVersion = await (getAppVersionFn?.call() ?? getAppVersion());
 
     final now = DateTime.now();
-    final String date = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
-    final String hour = "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
+    final String date =
+        "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+    final String hour =
+        "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
 
     // Use your getOrderedTechniques function
-    final techniques = await (
-      subsetTechniquesFn?.call(grade: grade, gradeTimeCsvPath: 'assets/csv/grade_time.csv') ?? 
-      subsetTechniques(grade: grade, gradeTimeCsvPath: 'assets/csv/grade_time.csv')
-    );
+    final techniques =
+        await (subsetTechniquesFn?.call(
+              grade: grade,
+              gradeTimeCsvPath: 'assets/csv/grade_time.csv',
+            ) ??
+            subsetTechniques(
+              grade: grade,
+              gradeTimeCsvPath: 'assets/csv/grade_time.csv',
+            ));
 
     final wazas = techniques.map((t) => t.waza).toList();
     final nextWazaIndices = List<int?>.filled(techniques.length, null);
@@ -71,7 +82,7 @@ Future<String> createExamJsonFile({
         "rating": 0,
         "index": index,
         "nextWazaIndex": nextWazaIndices[i],
-        "nextAttackIndex": nextAttackIndices[i]
+        "nextAttackIndex": nextAttackIndices[i],
       });
       index++;
     }
@@ -92,15 +103,19 @@ Future<String> createExamJsonFile({
           "Suwari waza": suwari.length,
           "Hanmi Handachi waza": hanmi.length,
           "Tachi waza": tachi.length,
-          "total": techniques.length
-        }
+          "total": techniques.length,
+        },
       },
       "evaluation": evaluationList,
     };
 
     // Save JSON to file
-    final String safeExamName = examName.replaceAll(' ', '_'); // Avoid spaces in filenames
-    final String dateTimePrefix = '${date.replaceAll('-', '_')}_${hour.replaceAll(':', '_')}';
+    final String safeExamName = examName.replaceAll(
+      ' ',
+      '_',
+    ); // Avoid spaces in filenames
+    final String dateTimePrefix =
+        '${date.replaceAll('-', '_')}_${hour.replaceAll(':', '_')}';
     final String safeFileName = 'exam_${dateTimePrefix}_$safeExamName';
 
     logger.d(examJson);
@@ -120,7 +135,9 @@ Future<Map<String, dynamic>> getTechniqueByIndex({
     final Map<String, dynamic> data = await getJsonData(fileName: fileName);
 
     if (!data.containsKey('evaluation') || data['evaluation'] is! List) {
-      throw Exception('Invalid exam file: missing or bad "evaluation" section.');
+      throw Exception(
+        'Invalid exam file: missing or bad "evaluation" section.',
+      );
     }
 
     final List<dynamic> evaluationList = data['evaluation'];
@@ -140,7 +157,8 @@ Future<Map<String, dynamic>> getExamMetaData({required String fileName}) async {
   try {
     final Map<String, dynamic> data = await getJsonData(fileName: fileName);
 
-    if (data.containsKey('metadata') && data['metadata'] is Map<String, dynamic>) {
+    if (data.containsKey('metadata') &&
+        data['metadata'] is Map<String, dynamic>) {
       final metadata = data['metadata'] as Map<String, dynamic>;
       return metadata;
     } else {
@@ -153,25 +171,29 @@ Future<Map<String, dynamic>> getExamMetaData({required String fileName}) async {
 
 Future<T> getExamMetadataKey<T>({
   required String fileName,
-  required String key
+  required String key,
 }) async {
-    final examData = await getJsonData(fileName: fileName);
+  final examData = await getJsonData(fileName: fileName);
 
-    if (!examData.containsKey('metadata')) {
-      throw Exception('Failed to get exam metadata: Missing "metadata" section.');
-    }
+  if (!examData.containsKey('metadata')) {
+    throw Exception('Failed to get exam metadata: Missing "metadata" section.');
+  }
 
-    final metadata = examData['metadata'];
-    if (metadata is! Map<String, dynamic>) {
-      throw Exception('Failed to get exam metadata: Expected "metadata" to be of type Map<String, dynamic>, but got ${metadata.runtimeType}.');
-    }
+  final metadata = examData['metadata'];
+  if (metadata is! Map<String, dynamic>) {
+    throw Exception(
+      'Failed to get exam metadata: Expected "metadata" to be of type Map<String, dynamic>, but got ${metadata.runtimeType}.',
+    );
+  }
 
-    final value = metadata[key];
-    if (value is! T) {
-      throw Exception('Failed to get exam metadata key: Expected "$key" to be of type $T, but got ${value.runtimeType}.');
-    }
+  final value = metadata[key];
+  if (value is! T) {
+    throw Exception(
+      'Failed to get exam metadata key: Expected "$key" to be of type $T, but got ${value.runtimeType}.',
+    );
+  }
 
-    return value;
+  return value;
 }
 
 Future<Map<String, dynamic>> getTechniqueAndExamSize({
@@ -179,14 +201,14 @@ Future<Map<String, dynamic>> getTechniqueAndExamSize({
   required int index,
 }) async {
   try {
-    final technique = await getTechniqueByIndex(fileName: fileName, index: index);
+    final technique = await getTechniqueByIndex(
+      fileName: fileName,
+      index: index,
+    );
     final metadata = await getExamMetaData(fileName: fileName);
     final sizeExam = metadata['size']['total'] as int;
 
-    return {
-      'technique': technique,
-      'sizeExam': sizeExam,
-    };
+    return {'technique': technique, 'sizeExam': sizeExam};
   } catch (e, stack) {
     throw Exception('Failed to get technique and size: $e\n$stack');
   }
@@ -220,11 +242,16 @@ Future<List<String>> loadExamFiles() async {
     final List<FileSystemEntity> files = appDocDir.listSync();
 
     // Filter only .json files
-    final examFiles = files
-        .where((file) => file.path.endsWith('.json') && file.path.split('/').last.startsWith('exam_'))
-        .map((file) => file.path.split('/').last.replaceAll('.json', ''))
-        .toList()
-      ..sort((a, b) => b.compareTo(a)); // Sort in decreasing order
+    final examFiles =
+        files
+            .where(
+              (file) =>
+                  file.path.endsWith('.json') &&
+                  file.path.split('/').last.startsWith('exam_'),
+            )
+            .map((file) => file.path.split('/').last.replaceAll('.json', ''))
+            .toList()
+          ..sort((a, b) => b.compareTo(a)); // Sort in decreasing order
     logger.d("Filtered exam files: $examFiles");
     return examFiles;
   }

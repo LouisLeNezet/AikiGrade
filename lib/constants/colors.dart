@@ -12,7 +12,6 @@ class AppColors {
   static const Color darkBlue = Color(0xFF09151A);
   static const Color black = Color.fromARGB(255, 1, 11, 15);
 
-
   static const Color primaryColor = purple;
   static const Color secondaryColor = red;
   static const Color accentColor = lightOrange;

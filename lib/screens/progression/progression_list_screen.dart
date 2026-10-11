@@ -51,10 +51,7 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
               padding: EdgeInsets.only(bottom: 8),
               child: Text(
                 'Progression History',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
 
@@ -65,21 +62,32 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
                 final fileName = examFiles[index];
 
                 return FutureBuilder<Map<String, String>>(
-                  future: Future.wait([
-                    getExamMetadataKey<String>(
-                        fileName: fileName, key: 'examName'),
-                    getExamMetadataKey<String>(
-                        fileName: fileName, key: 'date'),
-                    getExamMetadataKey<String>(
-                        fileName: fileName, key: 'hour'),
-                    getExamMetadataKey<String>(
-                        fileName: fileName, key: 'grade'),
-                  ]).then((values) => {
-                        'examName': values[0],
-                        'date': values[1],
-                        'hour': values[2],
-                        'grade': values[3],
-                      }),
+                  future:
+                      Future.wait([
+                        getExamMetadataKey<String>(
+                          fileName: fileName,
+                          key: 'examName',
+                        ),
+                        getExamMetadataKey<String>(
+                          fileName: fileName,
+                          key: 'date',
+                        ),
+                        getExamMetadataKey<String>(
+                          fileName: fileName,
+                          key: 'hour',
+                        ),
+                        getExamMetadataKey<String>(
+                          fileName: fileName,
+                          key: 'grade',
+                        ),
+                      ]).then(
+                        (values) => {
+                          'examName': values[0],
+                          'date': values[1],
+                          'hour': values[2],
+                          'grade': values[3],
+                        },
+                      ),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const SizedBox(
@@ -112,7 +120,8 @@ class _ProgressionListScreenState extends State<ProgressionListScreen> {
                             final confirm = await showConfirmDialog(
                               context: context,
                               title: 'Delete Exam',
-                              content: 'This will permanently delete this exam from your progression.',
+                              content:
+                                  'This will permanently delete this exam from your progression.',
                               confirmText: 'Delete',
                               confirmColor: Colors.red,
                             );

@@ -15,10 +15,7 @@ class ListScreenLayout extends StatelessWidget {
     return Column(
       children: [
         // fixed header (search, filters, metadata)
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: header,
-        ),
+        Padding(padding: const EdgeInsets.all(16), child: header),
 
         // scrollable content ONLY
         Expanded(child: child),

@@ -8,13 +8,11 @@ import '../../widgets/header_chip.dart';
 class ProgressionDetailScreen extends StatefulWidget {
   final String fileName;
 
-  const ProgressionDetailScreen({
-    required this.fileName,
-    super.key
-  });
+  const ProgressionDetailScreen({required this.fileName, super.key});
 
   @override
-  State<ProgressionDetailScreen> createState() => _ProgressionDetailScreenState();
+  State<ProgressionDetailScreen> createState() =>
+      _ProgressionDetailScreenState();
 }
 
 class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
@@ -37,20 +35,18 @@ class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
           }
 
           if (snapshot.hasError) {
-            return Center(
-              child: Text('Error loading exam: ${snapshot.error}'),
-            );
+            return Center(child: Text('Error loading exam: ${snapshot.error}'));
           }
 
           if (!snapshot.hasData) {
             return const Center(child: Text('No data found.'));
           }
 
-          final metadata =
-              snapshot.data!['metadata'] as Map<String, dynamic>;
+          final metadata = snapshot.data!['metadata'] as Map<String, dynamic>;
 
-          final evaluationList =
-              List<Map<String, dynamic>>.from(snapshot.data!['evaluation']);
+          final evaluationList = List<Map<String, dynamic>>.from(
+            snapshot.data!['evaluation'],
+          );
 
           return ListScreenLayout(
             header: Column(
@@ -61,8 +57,8 @@ class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
                   child: Text(
                     metadata['examName'] ?? 'Exam',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -81,7 +77,10 @@ class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
                     HeaderChip(label: 'Date', value: metadata['date']),
                     HeaderChip(label: 'Hour', value: metadata['hour']),
                     HeaderChip(label: 'Grade', value: metadata['grade']),
-                    HeaderChip(label: 'Size', value: '${metadata['size']['total']}'),
+                    HeaderChip(
+                      label: 'Size',
+                      value: '${metadata['size']['total']}',
+                    ),
                     HeaderChip(label: 'Version', value: metadata['version']),
                   ],
                 ),
@@ -93,8 +92,8 @@ class _ProgressionDetailScreenState extends State<ProgressionDetailScreen> {
                   child: Text(
                     'Techniques',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
 

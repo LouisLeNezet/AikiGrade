@@ -15,7 +15,6 @@ class ExamMenuScreen extends StatefulWidget {
   ExamMenuScreenState createState() => ExamMenuScreenState();
 }
 
-
 class ExamMenuScreenState extends State<ExamMenuScreen> {
   String selectedGrade = '5 Kyu';
   String examName = '';
@@ -38,8 +37,10 @@ class ExamMenuScreenState extends State<ExamMenuScreen> {
   Future<void> _loadConfig() async {
     await ConfigService.loadConfig();
     setState(() {
-      examNameDefault = ConfigService.getConfig('examDefaultName') ?? 'My Exam';  // Use the value from config or fallback to default
-      examName = examNameDefault;  // Set examName to the default value
+      examNameDefault =
+          ConfigService.getConfig('examDefaultName') ??
+          'My Exam'; // Use the value from config or fallback to default
+      examName = examNameDefault; // Set examName to the default value
     });
   }
 
@@ -100,10 +101,7 @@ class ExamMenuScreenState extends State<ExamMenuScreen> {
               ),
               child: const Text(
                 "Start Exam",
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
+                style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),
           ],
@@ -111,6 +109,7 @@ class ExamMenuScreenState extends State<ExamMenuScreen> {
       ),
     );
   }
+
   Future<void> _handleCreateExam() async {
     final fileName = await createExamJsonFile(
       grade: selectedGrade,
@@ -122,9 +121,7 @@ class ExamMenuScreenState extends State<ExamMenuScreen> {
     Navigator.pushNamed(
       context,
       AppRoutes.countdown,
-      arguments: {
-        'fileName': fileName,
-      }
+      arguments: {'fileName': fileName},
     );
   }
 }

@@ -13,7 +13,7 @@ class StartMenuScreen extends StatelessWidget {
         body: Container(
           width: double.infinity,
           padding: const EdgeInsets.all(32.0),
-            color: AppColors.startMenuBackground,
+          color: AppColors.startMenuBackground,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

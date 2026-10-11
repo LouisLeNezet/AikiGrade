@@ -51,8 +51,7 @@ void main() {
         grade: '4 Kyu',
       );
 
-      expect(technique.toString(), 
-        '''Technique(
+      expect(technique.toString(), '''Technique(
   waza: Tachi waza,
   attack: Katate dori,
   technique: Nikyo,
@@ -72,8 +71,10 @@ void main() {
 
       logger.d(allTechGrade);
       expect(allTechGrade, isNotEmpty);
-      expect(allTechGrade.every((t) => 
-        ['5 Kyu', '4 Kyu'].contains(t.grade)), isTrue);
+      expect(
+        allTechGrade.every((t) => ['5 Kyu', '4 Kyu'].contains(t.grade)),
+        isTrue,
+      );
     });
 
     test('loadGradeTimes returns time per grade', () async {
@@ -86,7 +87,9 @@ void main() {
     });
 
     test('loads and parses ordering correctly from CSV', () async {
-      final result = await loadOrderTechnique('assets/csv/techniques_ordering.csv');
+      final result = await loadOrderTechnique(
+        'assets/csv/techniques_ordering.csv',
+      );
 
       expect(result, isA<Map<String, Map<String, int>>>());
       // Example assertions, change based on your CSV content
@@ -100,26 +103,34 @@ void main() {
   });
 
   test('orderCompare', () async {
-    final orderMap = {
-      'a': 1,
-      'b': 2,
-      'c': 3,
-    };
+    final orderMap = {'a': 1, 'b': 2, 'c': 3};
 
     expect(orderCompare('a', 'b', orderMap), lessThan(0));
     expect(orderCompare('b', 'a', orderMap), greaterThan(0));
     expect(orderCompare('c', 'c', orderMap), equals(0));
 
-    final orders = await loadOrderTechnique('assets/csv/techniques_ordering.csv');
+    final orders = await loadOrderTechnique(
+      'assets/csv/techniques_ordering.csv',
+    );
     final positionOrder = orders['Waza']!;
-    final orderPosition = orderCompare("Tachi waza", "Suwari waza", positionOrder);
-    expect(orderPosition, 1, reason: 'Tachi waza should come after Suwari waza');
+    final orderPosition = orderCompare(
+      "Tachi waza",
+      "Suwari waza",
+      positionOrder,
+    );
+    expect(
+      orderPosition,
+      1,
+      reason: 'Tachi waza should come after Suwari waza',
+    );
   });
 
   test('orderTechniques', () async {
     final techniques = await loadAllTechniques('assets/csv/techniques.csv');
     final allTechGrade = await filterTechniquesGrades(techniques, '4 Kyu');
-    final orderedTechniques = await orderTechniques(lstTechniques: allTechGrade);
+    final orderedTechniques = await orderTechniques(
+      lstTechniques: allTechGrade,
+    );
 
     expect(orderedTechniques, isNotEmpty);
 
@@ -132,7 +143,7 @@ void main() {
 
   group('subset techniques', () {
     late Directory tempDir;
-  
+
     setUpAll(() async {
       tempDir = await Directory.systemTemp.createTemp('config_test');
       PathProviderPlatform.instance = _FakePathProvider(tempDir.path);
@@ -142,31 +153,32 @@ void main() {
       await tempDir.delete(recursive: true);
     });
 
-    test('subsetTechniques returns correct number of techniques per waza', () async {
-      await ConfigService.loadConfig();
-      ConfigService.setConfig('prioritizeBy', 'attack');
-      ConfigService.setConfig('timePerTechnique', 70);
-      ConfigService.saveConfig();
+    test(
+      'subsetTechniques returns correct number of techniques per waza',
+      () async {
+        await ConfigService.loadConfig();
+        ConfigService.setConfig('prioritizeBy', 'attack');
+        ConfigService.setConfig('timePerTechnique', 70);
+        ConfigService.saveConfig();
 
-      await createLearnJsonFile(
-        path: 'assets/csv/techniques.csv',
-      );
+        await createLearnJsonFile(path: 'assets/csv/techniques.csv');
 
-      final subset = await subsetTechniques(
-        grade: '4 Kyu',
-        gradeTimeCsvPath: 'assets/csv/grade_time.csv',
-      );
+        final subset = await subsetTechniques(
+          grade: '4 Kyu',
+          gradeTimeCsvPath: 'assets/csv/grade_time.csv',
+        );
 
-      expect(subset, isNotEmpty);
+        expect(subset, isNotEmpty);
 
-      // Example: 3 positions = tachi, suwari, hanmi → check distribution
-      final tachi = subset.where((t) => t.waza == 'Tachi waza');
-      final suwari = subset.where((t) => t.waza == 'Suwari waza');
-      final hanmi = subset.where((t) => t.waza == 'Hanmi Handachi waza');
+        // Example: 3 positions = tachi, suwari, hanmi → check distribution
+        final tachi = subset.where((t) => t.waza == 'Tachi waza');
+        final suwari = subset.where((t) => t.waza == 'Suwari waza');
+        final hanmi = subset.where((t) => t.waza == 'Hanmi Handachi waza');
 
-      expect(tachi.length, 8);
-      expect(suwari.length, 2);
-      expect(hanmi.length, 0);
-    });
+        expect(tachi.length, 8);
+        expect(suwari.length, 2);
+        expect(hanmi.length, 0);
+      },
+    );
   });
 }

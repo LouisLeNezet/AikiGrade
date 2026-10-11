@@ -5,7 +5,6 @@ import 'package:aikigrade/routes.dart';
 import 'package:aikigrade/constants/colors.dart';
 import 'package:aikigrade/functions/learn_json.dart';
 
-
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
 
@@ -42,18 +41,26 @@ class MainMenuScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => Navigator.pushNamed(context, AppRoutes.examMenu),
+                          onTap: () =>
+                              Navigator.pushNamed(context, AppRoutes.examMenu),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16),
-                                child: Image.asset('assets/images/exam.png', height: 200, fit: BoxFit.cover),
+                                child: Image.asset(
+                                  'assets/images/exam.png',
+                                  height: 200,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                               const SizedBox(height: 8),
                               Container(
                                 alignment: Alignment.center,
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
                                 decoration: BoxDecoration(
                                   color: AppColors.buttonColor,
                                   borderRadius: BorderRadius.circular(12),
@@ -70,18 +77,26 @@ class MainMenuScreen extends StatelessWidget {
                       const SizedBox(width: 32),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => Navigator.pushNamed(context, AppRoutes.learnMenu),
+                          onTap: () =>
+                              Navigator.pushNamed(context, AppRoutes.learnMenu),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(16),
-                                child: Image.asset('assets/images/learn.png', height: 200, fit: BoxFit.cover),
+                                child: Image.asset(
+                                  'assets/images/learn.png',
+                                  height: 200,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                               const SizedBox(height: 8),
                               Container(
                                 alignment: Alignment.center,
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
                                 decoration: BoxDecoration(
                                   color: AppColors.buttonColor,
                                   borderRadius: BorderRadius.circular(12),
@@ -108,7 +123,8 @@ class MainMenuScreen extends StatelessWidget {
               child: IconButton(
                 icon: const Icon(Icons.lightbulb_outline),
                 tooltip: 'More Info',
-                onPressed: () => Navigator.pushNamed(context, AppRoutes.moreInfos),
+                onPressed: () =>
+                    Navigator.pushNamed(context, AppRoutes.moreInfos),
               ),
             ),
           ],

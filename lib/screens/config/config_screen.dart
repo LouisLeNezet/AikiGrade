@@ -33,8 +33,7 @@ class ConfigFormState {
       examDefaultName: config['examDefaultName'] ?? 'My Exam',
       timePerTechnique: config['timePerTechnique'] ?? 60,
       prioritizeBy: config['prioritizeBy'] ?? 'attack',
-      numberOfTechniquePerAttack:
-          config['numberOfTechniquePerAttack'] ?? 2,
+      numberOfTechniquePerAttack: config['numberOfTechniquePerAttack'] ?? 2,
     );
   }
 }
@@ -57,8 +56,9 @@ class ConfigScreenState extends State<ConfigScreen> {
       'examDefaultName': ConfigService.getConfig('examDefaultName'),
       'timePerTechnique': ConfigService.getConfig('timePerTechnique'),
       'prioritizeBy': ConfigService.getConfig('prioritizeBy'),
-      'numberOfTechniquePerAttack':
-          ConfigService.getConfig('numberOfTechniquePerAttack'),
+      'numberOfTechniquePerAttack': ConfigService.getConfig(
+        'numberOfTechniquePerAttack',
+      ),
     };
 
     setState(() {
@@ -68,10 +68,9 @@ class ConfigScreenState extends State<ConfigScreen> {
   }
 
   void _saveConfig() {
-    final finalExamName =
-        form.examDefaultName.trim().isEmpty
-            ? 'My Exam'
-            : form.examDefaultName.trim();
+    final finalExamName = form.examDefaultName.trim().isEmpty
+        ? 'My Exam'
+        : form.examDefaultName.trim();
 
     ConfigService.setConfig('examDefaultName', finalExamName);
     ConfigService.setConfig('timePerTechnique', form.timePerTechnique);
@@ -121,9 +120,15 @@ class ConfigScreenState extends State<ConfigScreen> {
                   });
                 },
                 valuesMap: {
-                  "10": 10, "15": 15, "20": 20,
-                  "25": 25, "30": 30, "40": 40,
-                  "60": 60, "90": 90, "120": 120,
+                  "10": 10,
+                  "15": 15,
+                  "20": 20,
+                  "25": 25,
+                  "30": 30,
+                  "40": 40,
+                  "60": 60,
+                  "90": 90,
+                  "120": 120,
                   "180": 180,
                 },
                 hintText: "Select Time per technique",
@@ -162,10 +167,7 @@ class ConfigScreenState extends State<ConfigScreen> {
                     form.numberOfTechniquePerAttack = v;
                   });
                 },
-                valuesMap: {
-                  "1": 1, "2": 2, "3": 3,
-                  "4": 4, "5": 5,
-                },
+                valuesMap: {"1": 1, "2": 2, "3": 3, "4": 4, "5": 5},
                 hintText: "Max techniques per attack",
                 titleText: "Max Number of Technique per Attack",
               ),
@@ -195,8 +197,7 @@ class ConfigScreenState extends State<ConfigScreen> {
                 final confirm = await showConfirmDialog(
                   context: context,
                   title: 'Reset data',
-                  content:
-                      'This will permanently delete all your local data.',
+                  content: 'This will permanently delete all your local data.',
                   confirmText: 'Delete',
                   confirmColor: Colors.red,
                 );
