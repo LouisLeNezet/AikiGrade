@@ -11,7 +11,7 @@ class TextInput extends StatelessWidget {
     required this.onChanged,
     required this.hintText,
     required this.title,
-    required this.initialValue,  // Added this parameter to set default value
+    required this.initialValue, // Added this parameter to set default value
   });
 
   @override
@@ -19,13 +19,12 @@ class TextInput extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
+        Text(title, style: Theme.of(context).textTheme.headlineSmall),
         const SizedBox(height: 8),
         TextField(
-          controller: TextEditingController(text: initialValue),  // Set default value
+          controller: TextEditingController(
+            text: initialValue,
+          ), // Set default value
           onChanged: onChanged,
           decoration: InputDecoration(
             hintText: hintText,

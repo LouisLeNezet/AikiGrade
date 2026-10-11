@@ -31,10 +31,7 @@ class CountdownScreen extends StatelessWidget {
                 Navigator.pushNamed(
                   context,
                   AppRoutes.evaluation,
-                  arguments: {
-                    'fileName': fileName,
-                    'index': 0,
-                  },
+                  arguments: {'fileName': fileName, 'index': 0},
                 );
               },
             ),

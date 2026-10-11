@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
-import 'package:aikido_helper/functions/config_service.dart';
+import 'package:aikigrade/functions/config_service.dart';
 
 // --- Fake path_provider ---
 class _FakePathProvider extends PathProviderPlatform {
@@ -34,13 +34,13 @@ void main() {
 
       expect(appVersion, isNotNull);
       expect(appVersion, isA<String>());
-      expect(appVersion, '0.0.1+1');
+      expect(appVersion, '0.1.0+1');
 
       final examDefaultName = ConfigService.getConfig('examDefaultName');
       expect(examDefaultName, "My Exam");
 
       ConfigService.setConfig('examDefaultName', 'NewDefaultName');
-      ConfigService.saveConfig();
+      await ConfigService.saveConfig();
 
       await ConfigService.loadConfig();
       final newDefaultName = ConfigService.getConfig('examDefaultName');

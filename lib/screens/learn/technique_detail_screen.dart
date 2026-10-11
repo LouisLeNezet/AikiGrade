@@ -37,25 +37,30 @@ class TechniqueDetailScreen extends StatelessWidget {
             Center(
               child: Text(
                 '${technique.waza} - ${technique.attack}',
-                style: Theme.of(context).textTheme.titleLarge
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             Center(
               child: Text(
                 '${technique.technique}${technique.form.isNotEmpty ? ' - ${technique.form}' : ''}',
-                style: Theme.of(context).textTheme.titleLarge
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               'Expected at Grade: ${technique.grade}',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontStyle: FontStyle.italic,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontStyle: FontStyle.italic),
             ),
             const SizedBox(height: 16),
             if (technique.markdown.isNotEmpty) ...[
-              Center(child: Text('Notes:', style: Theme.of(context).textTheme.titleMedium)),
+              Center(
+                child: Text(
+                  'Notes:',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
               MarkdownViewer(
                 assetPath: technique.markdown,
                 imageWidth: 300,
@@ -65,21 +70,31 @@ class TechniqueDetailScreen extends StatelessWidget {
             ],
             const SizedBox(height: 16),
             if (technique.links.isNotEmpty) ...[
-              Center(child: Text('Videos:', style: Theme.of(context).textTheme.titleMedium)),
-              ...technique.links.map((link) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    YoutubeVideoPlayer(url: link),
-                    const SizedBox(height: 16),
-                  ],
+              Center(
+                child: Text(
+                  'Videos:',
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-              )),
+              ),
+              ...technique.links.map(
+                (link) => Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 2),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      YoutubeVideoPlayer(url: link),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
+              ),
               const SizedBox(height: 16),
             ],
             if (progression.isNotEmpty) ...[
-              Text('Progression:', style: Theme.of(context).textTheme.titleMedium),
+              Text(
+                'Progression:',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               const SizedBox(height: 16),
               SizedBox(
                 height: 200,
@@ -102,10 +117,18 @@ class TechniqueDetailScreen extends StatelessWidget {
                           interval: 1,
                           getTitlesWidget: (value, meta) {
                             // Only show for integer values between 1 and 5
-                            if (value >= 1 && value <= 5 && value == value.roundToDouble()) {
+                            if (value >= 1 &&
+                                value <= 5 &&
+                                value == value.roundToDouble()) {
                               return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 2),
-                                child: RatingEmoticon(rating: value.toInt(), showValue: false, iconSize: 20),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 2,
+                                ),
+                                child: RatingEmoticon(
+                                  rating: value.toInt(),
+                                  showValue: false,
+                                  iconSize: 20,
+                                ),
                               );
                             }
                             return const SizedBox.shrink();
@@ -118,15 +141,22 @@ class TechniqueDetailScreen extends StatelessWidget {
                           getTitlesWidget: (value, meta) {
                             int idx = value.toInt();
                             if (idx >= 0 && idx < dates.length) {
-                              return Text(dates[idx].split(' ').first, style: const TextStyle(fontSize: 10));
+                              return Text(
+                                dates[idx].split(' ').first,
+                                style: const TextStyle(fontSize: 10),
+                              );
                             }
                             return const SizedBox.shrink();
                           },
                           interval: 1,
                         ),
                       ),
-                      rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      rightTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      topTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
                     ),
                   ),
                 ),
@@ -135,9 +165,9 @@ class TechniqueDetailScreen extends StatelessWidget {
             if (progression.isEmpty) ...[
               Text(
                 'No progression available.',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontStyle: FontStyle.italic,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontStyle: FontStyle.italic),
               ),
             ],
           ],

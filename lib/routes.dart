@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:aikido_helper/functions/technique_class.dart';
+import 'package:aikigrade/functions/technique_class.dart';
 
 // Start & Main Menu
 import 'screens/start_menu/start_menu_screen.dart';
@@ -66,21 +66,17 @@ final Map<String, WidgetBuilder> appRoutes = {
     if (fileName == null || fileName.isEmpty) {
       return const Center(child: Text("Error: Invalid exam file!"));
     }
-    return CountdownScreen(
-      fileName: fileName,
-    );
+    return CountdownScreen(fileName: fileName);
   },
   AppRoutes.evaluation: (context) {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
     final fileName = args['fileName'] as String? ?? '';
     final index = args['index'] as int? ?? 0;
-    return EvaluationScreen(
-      fileName: fileName,
-      index: index,
-    );
+    return EvaluationScreen(fileName: fileName, index: index);
   },
   // Learn
-  AppRoutes.learnMenu: (context) => const LearnMenuScreen(fileName: "learningJson",),
+  AppRoutes.learnMenu: (context) =>
+      const LearnMenuScreen(fileName: "learningJson"),
   AppRoutes.techniqueDetail: (context) {
     final args = ModalRoute.of(context)!.settings.arguments as Map;
     // Convert the map to a Technique object
@@ -93,7 +89,9 @@ final Map<String, WidgetBuilder> appRoutes = {
       grade: techniqueMap['techniqueGrade'] ?? techniqueMap['grade'] ?? '',
       links: List<String>.from(techniqueMap['links'] ?? []),
       markdown: techniqueMap['markdown'] ?? '',
-      progression: List<Map<String, dynamic>>.from(techniqueMap['progression'] ?? []),
+      progression: List<Map<String, dynamic>>.from(
+        techniqueMap['progression'] ?? [],
+      ),
     );
     return TechniqueDetailScreen(technique: technique);
   },

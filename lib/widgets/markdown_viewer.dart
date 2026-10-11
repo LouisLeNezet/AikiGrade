@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:logger/logger.dart';
 
@@ -38,10 +38,7 @@ class MarkdownViewer extends StatelessWidget {
     final Uri uri = Uri.parse(url);
 
     if (await canLaunchUrl(uri)) {
-      await launchUrl(
-        uri,
-        mode: LaunchMode.externalApplication,
-      );
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
     } else {
       final logger = Logger();
       logger.e('Could not launch $url');
@@ -54,15 +51,11 @@ class MarkdownViewer extends StatelessWidget {
       future: _loadMarkdown(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.hasError || !snapshot.hasData) {
-          return const Center(
-            child: Text('Failed to load markdown.'),
-          );
+          return const Center(child: Text('Failed to load markdown.'));
         }
 
         return MarkdownBody(
@@ -83,9 +76,7 @@ class MarkdownViewer extends StatelessWidget {
           },
           styleSheet: MarkdownStyleSheet.fromTheme(
             Theme.of(context),
-          ).copyWith(
-            p: const TextStyle(fontSize: 16),
-          ),
+          ).copyWith(p: const TextStyle(fontSize: 16)),
         );
       },
     );

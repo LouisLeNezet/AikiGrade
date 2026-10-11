@@ -13,14 +13,15 @@ Future<String> getAppVersion() async {
 
 String toTitleCase(String input) {
   if (input.isEmpty) return input;
-  return input.split(' ').map((word) {
-    return word[0].toUpperCase() + word.substring(1).toLowerCase();
-  }).join(' ');
+  return input
+      .split(' ')
+      .map((word) {
+        return word[0].toUpperCase() + word.substring(1).toLowerCase();
+      })
+      .join(' ');
 }
 
-Future <Map<String, dynamic>> getJsonData({
-  required String fileName,
-}) async {
+Future<Map<String, dynamic>> getJsonData({required String fileName}) async {
   try {
     late String content;
     if (kIsWeb) {
@@ -48,8 +49,7 @@ Future <Map<String, dynamic>> getJsonData({
   }
 }
 
-
-Future saveJsonData({
+Future<void> saveJsonData({
   required Map<String, dynamic> jsonData,
   required String fileName,
 }) async {
@@ -59,12 +59,12 @@ Future saveJsonData({
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(fileName, jsonEncode(jsonData));
     } else {
-      // MOBILE: Save to file
+      // MOBILE: Save to file (write to a temp file, then replace atomically)
       final Directory appDocDir = await getApplicationDocumentsDirectory();
       final String filePath = '${appDocDir.path}/$fileName.json';
-      final File file = File(filePath);
-
-      await file.writeAsString(jsonEncode(jsonData), flush: true);
+      final File tmp = File('$filePath.tmp');
+      await tmp.writeAsString(jsonEncode(jsonData), flush: true);
+      await tmp.rename(filePath);
     }
   } catch (e, stack) {
     throw Exception('Failed to write JSON data: $e\n$stack');

@@ -15,17 +15,10 @@ class PageLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final content = Padding(
-      padding: padding,
-      child: child,
-    );
+    final content = Padding(padding: padding, child: child);
 
     return CenteredConstrained(
-      child: scrollable
-        ? SingleChildScrollView(
-            child: content,
-          )
-        : content,
+      child: scrollable ? SingleChildScrollView(child: content) : content,
     );
   }
 }

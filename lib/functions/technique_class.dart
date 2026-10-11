@@ -99,9 +99,7 @@ class Technique {
       case 'nevertested':
         return neverTested;
       default:
-        throw ArgumentError(
-          'Invalid String key: $key',
-        );
+        throw ArgumentError('Invalid String key: $key');
     }
   }
 

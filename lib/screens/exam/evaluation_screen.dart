@@ -1,4 +1,4 @@
-import 'package:aikido_helper/functions/learn_json.dart';
+import 'package:aikigrade/functions/learn_json.dart';
 import 'package:flutter/material.dart';
 import '../../functions/exam_json.dart';
 import '../../routes.dart';
@@ -24,6 +24,7 @@ class EvaluationScreen extends StatefulWidget {
 class _EvaluationScreenState extends State<EvaluationScreen> {
   int _currentRating = 0;
   final Logger logger = Logger();
+  bool _busy = false;
 
   Future<void> _saveRating(int rating) async {
     await saveTechniqueRating(
@@ -33,41 +34,50 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
     );
   }
 
-  Future<void> _goNextNamed(String route, Map<String, Object?> arguments) async {
-    await _saveRating(_currentRating);
-    if (!mounted) return;
+  Future<void> _goNextNamed(
+    String route,
+    Map<String, Object?> arguments,
+  ) async {
+    if (_busy) return;
+    _busy = true;
+    try {
+      await _saveRating(_currentRating);
+      if (!mounted) return;
 
-    Navigator.pushReplacementNamed(
-      context,
-      route,
-      arguments: arguments,
-    );
+      Navigator.pushReplacementNamed(context, route, arguments: arguments);
+    } finally {
+      _busy = false;
+    }
   }
 
   Future<void> _finishOrNext(bool isLast) async {
-    await _saveRating(_currentRating);
-    if (!mounted) return;
+    if (_busy) return;
+    _busy = true;
+    try {
+      await _saveRating(_currentRating);
+      if (!mounted) return;
 
-    if (isLast) {
-      updateLearnJsonFile(
-        learnFile: "learningJson",
-        examFile: widget.fileName,
-      );
+      if (isLast) {
+        await updateLearnJsonFile(
+          learnFile: "learningJson",
+          examFile: widget.fileName,
+        );
+        if (!mounted) return;
 
-      Navigator.pushNamed(
-        context,
-        AppRoutes.progressionDetail,
-        arguments: {'fileName': widget.fileName},
-      );
-    } else {
-      Navigator.pushReplacementNamed(
-        context,
-        AppRoutes.evaluation,
-        arguments: {
-          'fileName': widget.fileName,
-          'index': widget.index + 1,
-        },
-      );
+        Navigator.pushReplacementNamed(
+          context,
+          AppRoutes.progressionDetail,
+          arguments: {'fileName': widget.fileName},
+        );
+      } else {
+        Navigator.pushReplacementNamed(
+          context,
+          AppRoutes.evaluation,
+          arguments: {'fileName': widget.fileName, 'index': widget.index + 1},
+        );
+      }
+    } finally {
+      _busy = false;
     }
   }
 
@@ -107,15 +117,13 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
             final examSize = data['sizeExam'] as int;
             final isLast = widget.index == examSize - 1;
 
-            final techniqueData =
-                data['technique'] as Map<String, dynamic>;
+            final techniqueData = data['technique'] as Map<String, dynamic>;
 
             final waza = techniqueData['waza'] as String;
             final attack = techniqueData['attack'] as String;
             final technique = techniqueData['technique'] as String;
             final form = techniqueData['form'] as String? ?? '';
-            final techniqueGrade =
-                techniqueData['techniqueGrade'] as String;
+            final techniqueGrade = techniqueData['techniqueGrade'] as String;
 
             final nextWazaIndex = techniqueData['nextWazaIndex'] as int?;
             final nextAttackIndex = techniqueData['nextAttackIndex'] as int?;
@@ -126,30 +134,40 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
               center: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(waza,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineMedium),
+                  Text(
+                    waza,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
                   const SizedBox(height: 10),
 
-                  Text(attack,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineMedium),
+                  Text(
+                    attack,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
                   const SizedBox(height: 10),
 
-                  Text(technique,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineMedium),
+                  Text(
+                    technique,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
                   const SizedBox(height: 10),
 
-                  Text(form,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineMedium),
+                  Text(
+                    form,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
 
                   const SizedBox(height: 40),
 
-                  Text(techniqueGrade,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineMedium),
+                  Text(
+                    techniqueGrade,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
 
                   const SizedBox(height: 10),
 
@@ -177,13 +195,10 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                   if (nextWazaIndex != null) ...[
                     FloatingActionButton.extended(
                       heroTag: 'waza',
-                      onPressed: () => _goNextNamed(
-                        AppRoutes.evaluation,
-                        {
-                          'fileName': widget.fileName,
-                          'index': nextWazaIndex,
-                        },
-                      ),
+                      onPressed: () => _goNextNamed(AppRoutes.evaluation, {
+                        'fileName': widget.fileName,
+                        'index': nextWazaIndex,
+                      }),
                       label: const Text('Next Waza'),
                       icon: const Icon(Icons.skip_next),
                     ),
@@ -193,13 +208,10 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                   if (nextAttackIndex != null) ...[
                     FloatingActionButton.extended(
                       heroTag: 'attack',
-                      onPressed: () => _goNextNamed(
-                        AppRoutes.evaluation,
-                        {
-                          'fileName': widget.fileName,
-                          'index': nextAttackIndex,
-                        },
-                      ),
+                      onPressed: () => _goNextNamed(AppRoutes.evaluation, {
+                        'fileName': widget.fileName,
+                        'index': nextAttackIndex,
+                      }),
                       label: const Text('Next Attack'),
                       icon: const Icon(Icons.skip_next),
                     ),

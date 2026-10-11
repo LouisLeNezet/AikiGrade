@@ -46,9 +46,7 @@ class ValueSelectionWidget<T> extends StatelessWidget {
             items: valuesMap.entries.map((entry) {
               return DropdownMenuItem<T>(
                 value: entry.value,
-                child: Center(
-                  child: Text(entry.key),
-                ),
+                child: Center(child: Text(entry.key)),
               );
             }).toList(),
           ),

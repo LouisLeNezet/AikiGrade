@@ -4,10 +4,7 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 class YoutubeVideoPlayer extends StatefulWidget {
   final String url;
 
-  const YoutubeVideoPlayer({
-    super.key,
-    required this.url,
-  });
+  const YoutubeVideoPlayer({super.key, required this.url});
 
   @override
   State<YoutubeVideoPlayer> createState() => _YoutubeVideoPlayerState();
@@ -42,9 +39,6 @@ class _YoutubeVideoPlayerState extends State<YoutubeVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return YoutubePlayer(
-      controller: _controller,
-      aspectRatio: 16 / 9,
-    );
+    return YoutubePlayer(controller: _controller, aspectRatio: 16 / 9);
   }
 }

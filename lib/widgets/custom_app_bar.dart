@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
-import 'package:aikido_helper/widgets/centered_constrained.dart';
+import 'package:aikigrade/widgets/centered_constrained.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -16,7 +16,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       leading: Navigator.of(context).canPop()
           ? IconButton(
-              icon: const Icon(Icons.arrow_back, color: AppColors.headerTitleColor),
+              icon: const Icon(
+                Icons.arrow_back,
+                color: AppColors.headerTitleColor,
+              ),
               onPressed: () => Navigator.of(context).pop(),
             )
           : null,
@@ -25,10 +28,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/images/logo_minimalist_black.png',
-              height: 45,
-            ),
+            Image.asset('assets/images/logo_minimalist_black.png', height: 45),
             const SizedBox(width: 20),
             const Text(
               'AïkiGrade',

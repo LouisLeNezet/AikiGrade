@@ -20,10 +20,7 @@ Future<bool?> showConfirmDialog({
         ),
         TextButton(
           onPressed: () => Navigator.pop(context, true),
-          child: Text(
-            confirmText,
-            style: TextStyle(color: confirmColor),
-          ),
+          child: Text(confirmText, style: TextStyle(color: confirmColor)),
         ),
       ],
     ),

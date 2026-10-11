@@ -20,18 +20,42 @@ class AikiGradeApp extends StatelessWidget {
         scaffoldBackgroundColor: AppColors.backgroundColor,
         // Set the text color for the entire app
         textTheme: TextTheme(
-          headlineLarge: TextStyle(color: AppColors.textColor), // Previously headline1
-          headlineMedium: TextStyle(color: AppColors.textColor), // Previously headline2
-          headlineSmall: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textColor),  // Previously headline3
-          titleLarge: TextStyle(color: AppColors.textColor),    // Previously headline4
-          titleMedium: TextStyle(color: AppColors.textColor),  // Previously headline5
-          titleSmall: TextStyle(color: AppColors.textColor),   // Previously headline6
-          labelLarge: TextStyle(color: AppColors.textColor),  // For button labels
-          labelMedium: TextStyle(color: AppColors.textColor), // For button labels
-          labelSmall: TextStyle(color: AppColors.textColor),  // For button labels
-          bodyLarge: TextStyle(color: AppColors.textColor),  // Previously bodyText1
-          bodyMedium: TextStyle(color: AppColors.textColor), // Previously bodyText2
-          bodySmall: TextStyle(color: AppColors.textColor),   // For smaller text
+          headlineLarge: TextStyle(
+            color: AppColors.textColor,
+          ), // Previously headline1
+          headlineMedium: TextStyle(
+            color: AppColors.textColor,
+          ), // Previously headline2
+          headlineSmall: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textColor,
+          ), // Previously headline3
+          titleLarge: TextStyle(
+            color: AppColors.textColor,
+          ), // Previously headline4
+          titleMedium: TextStyle(
+            color: AppColors.textColor,
+          ), // Previously headline5
+          titleSmall: TextStyle(
+            color: AppColors.textColor,
+          ), // Previously headline6
+          labelLarge: TextStyle(
+            color: AppColors.textColor,
+          ), // For button labels
+          labelMedium: TextStyle(
+            color: AppColors.textColor,
+          ), // For button labels
+          labelSmall: TextStyle(
+            color: AppColors.textColor,
+          ), // For button labels
+          bodyLarge: TextStyle(
+            color: AppColors.textColor,
+          ), // Previously bodyText1
+          bodyMedium: TextStyle(
+            color: AppColors.textColor,
+          ), // Previously bodyText2
+          bodySmall: TextStyle(color: AppColors.textColor), // For smaller text
         ),
         // Button styles
         elevatedButtonTheme: ElevatedButtonThemeData(

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:aikido_helper/functions/utils.dart';
+import 'package:aikigrade/functions/utils.dart';
 
 class ConfigService {
   static Map<String, dynamic> _config = {};
@@ -37,11 +37,12 @@ class ConfigService {
     _loaded = true;
   }
 
-   /// Fallback: load default config from assets
+  /// Fallback: load default config from assets
   static Future<void> _loadDefaultConfig() async {
     try {
-      final String jsonString =
-          await rootBundle.loadString('assets/config.json');
+      final String jsonString = await rootBundle.loadString(
+        'assets/config.json',
+      );
       _config = jsonDecode(jsonString);
     } catch (e) {
       debugPrint('Error loading default config: $e');
@@ -61,10 +62,7 @@ class ConfigService {
 
   static Future<void> saveConfig() async {
     try {
-      await saveJsonData(
-        fileName: 'user_config',
-        jsonData: _config,
-      );
+      await saveJsonData(fileName: 'user_config', jsonData: _config);
     } catch (e) {
       debugPrint('Error saving config: $e');
     }
